@@ -1,0 +1,15 @@
+package goping
+
+import (
+	"testing"
+)
+
+func TestChecksum(t *testing.T) {
+	b := []byte{0x08, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x0e, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68}
+	sum := checksum(b, len(b))
+
+	expected := uint16(0x665b)
+	if sum != uint16(expected) {
+		t.Errorf("expected %x, but %x", expected, sum)
+	}
+}

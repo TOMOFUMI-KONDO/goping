@@ -151,7 +151,7 @@ func (ih *IpHeader) SetTotalLen(rxLen int, rxIp IpHeader) {
 
 func (ih *IpHeader) SetChecksum() {
 	b := ih.Encode()
-	ih.Checksum = checksum(b[:], int(ih.HeaderLenBytes()))
+	ih.Checksum = htons(checksum(b[:], int(ih.HeaderLenBytes())))
 }
 
 type IcmpHeader struct {
@@ -187,7 +187,7 @@ func (ih IcmpHeader) ToString() string {
 }
 
 func (ih *IcmpHeader) SetChecksum(tx [PACKET_BUF_SIZE]byte, ip IpHeader) {
-	ih.Checksum = checksum(tx[ETH_HEADER_SIZE+ip.HeaderLenBytes():], int(ip.DataSize()))
+	ih.Checksum = htons(checksum(tx[ETH_HEADER_SIZE+ip.HeaderLenBytes():], int(ip.DataSize())))
 }
 
 func checksum(buf []uint8, length int) uint16 {
@@ -203,8 +203,3 @@ func checksum(buf []uint8, length int) uint16 {
 
 	return ^uint16(sum)
 }
-
-// func init() {
-// 	b := []byte{0x08, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x0e, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68}
-// 	fmt.Printf("0x%04x\n", checksum(b, 16))
-// }

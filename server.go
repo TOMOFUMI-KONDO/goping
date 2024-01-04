@@ -114,9 +114,6 @@ func replyIcmp(fd int, rx [PACKET_BUF_SIZE]byte, rxLen int, eth EthHeader, ip Ip
 		return fmt.Errorf("failed to create icmp echo reply: %w", err)
 	}
 
-	// fmt.Printf("rx eth:%s,ip:%s,icmp:%s,data:%08b\n", DecodeEth(rx[:]).ToString(), DecodeIp(rx[ETH_HEADER_SIZE:]).ToString(), DecodeIcmp(rx[ETH_HEADER_SIZE+IP_HEADER_SIZE:]).ToString(), rx[ETH_HEADER_SIZE+IP_HEADER_SIZE+ICMP_HEADER_SIZE:rxLen+8])
-	fmt.Printf("tx eth:%s,ip:%s,icmp:%s,data:%08b\n", DecodeEth(reply[:]).ToString(), DecodeIp(reply[ETH_HEADER_SIZE:]).ToString(), DecodeIcmp(reply[ETH_HEADER_SIZE+IP_HEADER_SIZE:]).ToString(), reply[ETH_HEADER_SIZE+IP_HEADER_SIZE+ICMP_HEADER_SIZE+8:])
-
 	if err := write(fd, reply); err != nil {
 		return fmt.Errorf("failed to write icmp echo reply: %w", err)
 	}
